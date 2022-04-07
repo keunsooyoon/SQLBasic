@@ -27,5 +27,26 @@ SQL특징
 
 
 
+# 테이블 전체 내용 보기
+
+select * 
+from hr.employees;
+
+
+
+
+# 특정 열만 출력하기
+
+select employee_id, first_name, last_name
+from hr.employees;
+
+
+
+
+
+
+
+
+
 
  
