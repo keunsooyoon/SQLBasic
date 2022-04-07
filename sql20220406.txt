@@ -29,24 +29,65 @@ SQL특징
 
 # 테이블 전체 내용 보기
 
-select * 
-from hr.employees;
-
+SELECT * 
+FROM hr.employees;
 
 
 
 # 특정 열만 출력하기
 
-select employee_id, first_name, last_name
-from hr.employees;
+SELECT employee_id, first_name, last_name
+FROM hr.employees;
 
 
 
+# 특정열을 기준으로 내림차순 정렬하여 출력하기
+
+SELECT employee_id, first_name, last_name
+FROM hr.employees
+ORDER BY employee_id DESC;
 
 
 
+# 고유한 하나씩만 출력
 
-
-
-
+SELECT DISTINCT job_id
+FROM hr.employees;
  
+
+# 별칭 설정 AS 생략가능
+
+SELECT employee_id AS 사원번호, first_name AS 이름, last_name AS 성
+FROM hr.employees;
+
+
+
+
+# 열값들을 붙여서 하나의 셀에 출력
+
+SELECT employee_id ,first_name ||  ' ' || last_name
+FROM hr.employees;
+
+
+SELECT employee_id ,first_name ||  ' ' || last_name,
+       email || '@' || 'company.com'
+FROM hr.employees;
+
+
+# 기본 열값을 이용한 계산
+
+SELECT employee_id ,salary, salary+500, salary-100, (salary*1.1)/2
+FROM hr.employees;
+
+
+
+SELECT employee_id AS 사원번호,
+        salary AS 급여, 
+        salary+500 AS 추가급여, 
+        salary-100 AS 인하급여, 
+        (salary*1.1)/2 AS 조정급여
+FROM hr.employees;
+
+
+
+
