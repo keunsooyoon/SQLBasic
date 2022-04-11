@@ -445,3 +445,76 @@ FROM hr.employees;
 24000	2100	Winston	Adam
 
 
+
+GROUP BY 그룹으로 묶기
+
+
+
+SELECT 열이름, 열이름(그룹)
+FROM 테이블이름
+WHERE 조건식(생략가능)
+GROUP BY 열이름 
+ORDER BY 열이름 (정렬 생략가능)
+
+
+테이블에 접근하여
+WHERE 조건에 맞는 데이터만 골라내고 (생략가능)
+열을 같은 값끼리 그룹화하여
+오름차순 / 내림차순 정렬하여
+결과를 출력
+
+
+
+employee 테이블에서 employee_id 가 10이상 직원들만 job_id 별로 그룹화하여
+job_id 별로 총 급여와 job_id 별 평균급여를 구하고
+job_id 별 총 급여를 기준으로 내림차순 정렬하세요
+
+
+SELECT job_id 직무, SUM(salary) 총급여, AVG(salary) 평균급여
+FROM hr.employees
+WHERE employee_id >= 10
+GROUP BY job_id
+ORDER BY 총급여 DESC
+
+
+SELECT job_id 직무_대분류, manager_id 매니저_소분류, SUM(salary) 총급여, AVG(salary) 평균급여
+FROM hr.employees
+WHERE employee_id >= 10
+GROUP BY job_id, manager_id
+ORDER BY 총급여 DESC
+
+
+
+
+
+HAVING 연산된 그룹 함수 결과에 조건을 적용하기
+
+where절에서는 그룹함수를 사용할수 없기때문에 having 절을 사용하여 
+그룹함수의 결과에 다시 조건을 적용한다. 
+
+
+
+employees 테이블에서 employee_id 가 10 이상인 직원들에 대해 job_id 별로
+그룹화하여 job_id별로 총 급여와 평균 급여를 구하고  job_id 별 총급여가
+30000 보다 큰값만 job_id별 총급여를 기준으로 내림차순 정렬하여 출력하세요. 
+
+
+SELECT job_id 직무, SUM(salary) 총급여, AVG(salary) 평균급여
+FROM hr.employees
+WHERE employee_id >= 10
+GROUP BY job_id
+HAVING SUM(salary) > 30000
+ORDER BY 총급여 DESC
+
+
+
+
+
+
+
+
+
+
+
+
+
