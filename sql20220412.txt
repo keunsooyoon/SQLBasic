@@ -1,0 +1,112 @@
+
+조인 기법
+
+동등조인 조인 조건이 정확히 일치하는 경우에만 결과 출력
+외부조인 조인 조건이 정확히 일치하지 않아도 모든 결과 출력
+자체조인 자체 테이블에서 조인하고자 할때 사용
+
+(곱집합, 비동등)
+
+
+동등 조인의 기본 구문
+
+SELECT  테이블1.열1   [, 테이블2.열2]
+FROM 테이블1, 테이블2
+WHERE 테이블1.열1 = 테이블2.열2]
+
+SELECT 절에는 출력할 열
+FROM 접근하려는 테이블 들의 이름
+WHERE 절에는 조인 조건을 기술
+
+조회의 명확성을 위해서 열이름 앞에는 테이블 이름을 붙인다. 
+(테이블들에 동일한 이름이 존재할수 있기때문에 )
+
+
+SELECT *
+FROM hr.employees A, hr.departments B
+WHERE A.department_id = B.department_id;
+
+부서에 대한 상세 정보를 보기 위해서 employee 테이블과 demartments
+테이블의 각각 키인 department_id를 조인한 결과이다. department_id값이 같은 것 끼리 연결되어 조회된것을 볼수 있다. 
+열 전체를 보기위해 *을 사용했다. 
+
+어떤 직원이 어느 부서에 속하는지 알수 있게 되었다. 여기에 조건을 추가해보자. 부서의 상세 위치 정보를 확인해보자. 
+
+SELECT *
+FROM hr.employees A, hr.departments B, hr.locations C
+WHERE A.department_id = B.department_id
+AND B.location_id = C.location_id;
+
+
+SELECT A.employee_id, A.department_id, B.department_name, C.location_id, C.city
+FROM hr.employees A, hr.departments B, hr.locations C
+WHERE A.department_id = B.department_id
+AND B.location_id = C.location_id;
+
+employees 테이블과 demartments 테이블 은 department_id로 조인했고 AND연산자를 사용해서 departments 테이블과 locations테이블을
+locatiohn_id로 조인했다. 실핼결과를 보면 조인된 열의 데이터값을 기준으로 행들이 연결된 것을 볼수 있다. 이처럼 AND 연산자를 사용하여 조인 조건식을 계속 이어나가면서 원하는 정보를 조회할수 있게 된다. 
+
+###외부조인 : 모든 데이터를 연결한다. 
+
+동등조인은 데이터값이 정확히 일치하는 경우에만 결과를 출력하였다.
+데이터값이 일치하지 않으면 조회가 되지 않는다. 
+
+SELECT COUNT(*)
+FROM hr.employees A, hr.departments B
+WHERE A.department_id = B.department_id;
+
+COUNT(*)
+106
+
+
+SELECT COUNT(*)
+FROM hr.employees A;
+
+COUNT(*)
+107
+
+1건의 차이가 나는 이유는 일치하지 않는 1건이 누락되었기 때문이다. 
+
+외부조인은 조건을 만족하지 않는 행도 모두 출력하는 기법이다. 
+1. 동등 조건을 만족하지 못해서 누락되는 행을 출력하기 위해 사용한다. 
+2. 외부 조인은 + 기호를 사용한다. 
+3. + 기호는 조인할 행이 없는 즉 데이터가 부족한 테이블 열이름 뒤에 기술한다. 
+4. + 기호는 외부 조인 하려는 한쪽에만 기술할수 있다. 양쪽에는 기술할수 없다. 
+5. + 기호를 붙이면 데이터 값이 부족한 테이블에 null 값을 같는 행이 생성되어 데이터 값이 충분한 테이블의 행들이 null행에 조인된다. 
+
+
+
+
+SELECT *
+FROM hr.employees A, hr.departments B
+WHERE A.department_id = B.department_id(+)
+ORDER BY A.employee_id;
+
+employees 테이블과 departmentss 테이블을 department_id로
+외부 조인하여 department_id가 null인 값도 함께 출력하였다. 
+이처럼 외부 조인은 일치하지 않는 데이터를 출력할때 유용하다. 
+
+
+
+
+
+
+
+SELECT *
+FROM hr.employees A, hr.departments B
+WHERE A.department_id(+) = B.department_id
+ORDER BY A.employee_id;
+
+
+employees 테이블의 데이터가 부족하고 departments테이블의 데이터가 충분하다는 의미가 되기 떄문에 departments 테이블의 일치하지 않는 department_id (데이터가 충분한쪽) 가 employees테이블의 부족한 데이터에대해 null로 조인되었다. 따라서 같은 테이블 안의열 depart_name정보도 같이 출력되는 결과를 확인할 수 있게 된다. 
+demartments 테이블의 department_id에 대해 동등 조인 되지 못한 데이터도 모두 출력하겠다는 의미가 된다. 
+
+
+
+
+
+
+
+
+
+
